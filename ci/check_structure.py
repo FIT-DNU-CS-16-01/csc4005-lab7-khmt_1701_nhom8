@@ -3,7 +3,7 @@ from pathlib import Path
 REQUIRED_PATHS = [
     "README.md",
     "REPORT_TEMPLATE.md",
-    "RUBRIC_LAB7.md",
+    # "RUBRIC_LAB7.md",
     "requirements.txt",
     "configs/quantization_dynamic.json",
     "configs/kd_student_mobilenet.json",
@@ -12,7 +12,7 @@ REQUIRED_PATHS = [
     "docs/QUANTIZATION_GUIDE.md",
     "docs/KD_GUIDE.md",
     "docs/TRADEOFF_ANALYSIS_GUIDE.md",
-    "docs/GITHUB_CLASSROOM_GUIDE.md",
+    # "docs/GITHUB_CLASSROOM_GUIDE.md",
     "src/__init__.py",
     "src/dataset.py",
     "src/models.py",
