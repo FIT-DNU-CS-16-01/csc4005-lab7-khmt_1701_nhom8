@@ -38,7 +38,12 @@ def load_json(path: str | Path):
 
 
 def file_size_mb(path: str | Path) -> float:
-    return os.path.getsize(path) / (1024 * 1024)
+    p = Path(path)
+    total_bytes = os.path.getsize(p)
+    sidecar = p.with_name(p.name + ".data")
+    if sidecar.exists():
+        total_bytes += os.path.getsize(sidecar)
+    return total_bytes / (1024 * 1024)
 
 
 def percent_change(before: float, after: float) -> float:

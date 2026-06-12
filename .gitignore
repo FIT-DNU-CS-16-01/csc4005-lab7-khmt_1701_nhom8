@@ -15,6 +15,9 @@ models/*
 outputs/*
 !outputs/.gitkeep
 
+LAB7_QUANTIZATION_PLAN.md
+REPORT_LAB7_COMPLETED.md
+
 *.zip
 *.tar
 *.tar.gz

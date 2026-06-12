@@ -14,15 +14,20 @@ def parse_args():
     parser.add_argument("--compressed_eval", type=str, required=True)
     parser.add_argument("--baseline_benchmark", type=str, required=True)
     parser.add_argument("--compressed_benchmark", type=str, required=True)
+    parser.add_argument("--baseline_model", type=str, default="baseline_onnx")
+    parser.add_argument("--compressed_model", type=str, default="compressed")
     parser.add_argument("--output_csv", type=str, required=True)
     parser.add_argument("--output_md", type=str, required=True)
     parser.add_argument("--batch_size", type=int, default=1)
     return parser.parse_args()
 
 
-def pick_bs1_latency(csv_path: str, batch_size: int):
+def pick_bs1_latency(csv_path: str, batch_size: int, model_name: str):
     df = pd.read_csv(csv_path)
-    row = df[df["batch_size"] == batch_size].iloc[0]
+    matches = df[(df["batch_size"] == batch_size) & (df["model"] == model_name)]
+    if matches.empty:
+        raise ValueError(f"Could not find row for model='{model_name}' and batch_size={batch_size} in {csv_path}")
+    row = matches.iloc[0]
     return float(row["mean_latency_ms"]), float(row["throughput_img_per_sec"]), float(row["model_size_mb"])
 
 
@@ -31,8 +36,8 @@ def main():
     base_eval = load_json(args.baseline_eval)
     comp_eval = load_json(args.compressed_eval)
 
-    base_latency, base_thr, base_size = pick_bs1_latency(args.baseline_benchmark, args.batch_size)
-    comp_latency, comp_thr, comp_size = pick_bs1_latency(args.compressed_benchmark, args.batch_size)
+    base_latency, base_thr, base_size = pick_bs1_latency(args.baseline_benchmark, args.batch_size, args.baseline_model)
+    comp_latency, comp_thr, comp_size = pick_bs1_latency(args.compressed_benchmark, args.batch_size, args.compressed_model)
 
     rows = [
         {
